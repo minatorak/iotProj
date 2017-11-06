@@ -15,14 +15,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="Email" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -30,17 +29,17 @@
         android:layout_width="175dp"
         android:layout_height="72dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="Password" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.constraint.Guideline
@@ -50,25 +49,58 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_sign_in"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:onClick="onClickSignIn"
+        android:text="SIGN IN"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.16000003" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_create_account"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:onClick="onClickCreate"
+        android:text="CREATE ACCOUNT"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_google_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_create_account"
+        app:layout_constraintStart_toStartOf="@+id/btn_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_in">
+
+    </com.google.android.gms.common.SignInButton>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19999999" />
+
 </android.support.constraint.ConstraintLayout>
