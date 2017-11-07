@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,6 +17,7 @@ public class AccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     AppCompatTextView tvDisplay;
+    AppCompatButton btnLogout;
     String providerId = "null";
     String uid = "null";
     String name = "null";
@@ -27,7 +30,7 @@ public class AccountActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         tvDisplay = findViewById(R.id.tv_display);
-
+        btnLogout = findViewById(R.id.btn_logout);
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
@@ -46,10 +49,18 @@ public class AccountActivity extends AppCompatActivity {
                 } else {
                     // User is signed out
                     startActivity(new Intent(AccountActivity.this,MainActivity.class));
+                    finish();
                 }
                 // ...
             }
         };
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+            }
+        });
+
     }
 
     @SuppressLint("SetTextI18n")
