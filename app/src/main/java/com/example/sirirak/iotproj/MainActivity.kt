@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN = 1
     private var mGoogleApiClient:GoogleApiClient?=null
-    private var mGoogleBtn:SignInButton? = null
+
     private val TagGoogleSign:String = "result google sign-in"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +52,17 @@ class MainActivity : AppCompatActivity() {
             val user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
+                val intent = Intent(this,AccountActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
                 // User is signed out
             }
             // ...
         }
-
+        btn_google_sign.setOnClickListener {
+            signIn()
+        }
 
         // Configure Google Sign In
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -110,7 +115,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //Firebase Auth with Google Account
-    private fun signIn() {
+    fun signIn() {
+        Log.d("Google sign in","onclick")
         val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
