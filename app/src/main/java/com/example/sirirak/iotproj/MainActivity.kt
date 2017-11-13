@@ -4,31 +4,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import android.widget.Toast
 
-import com.google.firebase.auth.AuthResult
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.OnCompleteListener
-import android.R.attr.password
 import kotlinx.android.synthetic.main.activity_main.*
-import android.R.attr.password
 import android.util.Log
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.Auth
 import android.content.Intent
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import android.R.attr.data
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import android.support.annotation.NonNull
+import com.example.sirirak.iotproj.activity.AccountActivity
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.AuthCredential
-
-
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             val user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
-                val intent = Intent(this,AccountActivity::class.java)
+                val intent = Intent(this, AccountActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
