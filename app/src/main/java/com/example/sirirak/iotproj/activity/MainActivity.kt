@@ -1,4 +1,4 @@
-package com.example.sirirak.iotproj
+package com.example.sirirak.iotproj.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +11,9 @@ import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.Auth
 import android.content.Intent
+import com.example.sirirak.iotproj.R
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.example.sirirak.iotproj.activity.AccountActivity
 import com.google.firebase.auth.GoogleAuthProvider
 
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         mGoogleApiClient = GoogleApiClient.Builder(applicationContext)
                 .enableAutoManage(this,
                         GoogleApiClient.OnConnectionFailedListener {
-
+                            Toast.makeText(this, "ConnectionFailed", Toast.LENGTH_SHORT).show()
                         }
                 ).addApi(Auth.GOOGLE_SIGN_IN_API,gso).build()
     }

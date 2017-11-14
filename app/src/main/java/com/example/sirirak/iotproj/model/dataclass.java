@@ -4,8 +4,8 @@ package com.example.sirirak.iotproj.model;
 public class dataclass {
     public Diff diff;
 
-    private static class Diff {
-        private int near;
+    public static class Diff {
+        public int near;
 
         public int getNear() {
             return near;
@@ -18,9 +18,9 @@ public class dataclass {
 
     public PClient pClient;
 
-    private static class PClient {
-        private int lati;
-        private int longti;
+    public static class PClient {
+        public int lati;
+        public int longti;
 
         public int getLati() {
             return lati;
@@ -40,7 +40,7 @@ public class dataclass {
     }
 
     public PNode pNode;
-    private static class PNode{
+    public static class PNode{
         private int lati;
         private int longti;
 
@@ -61,11 +61,11 @@ public class dataclass {
         }
     }
 
-    public ProcessStage processStage;
-    private static class ProcessStage{
-        private String codeValidate;
-        private int state;
-        private int validate;
+    public ProcessStage process;
+    public static class ProcessStage{
+        public String codeValidate;
+        public int state;
+        public int validate;
 
         public String getCodeValidate() {
             return codeValidate;
@@ -116,11 +116,11 @@ public class dataclass {
         this.pNode = pNode;
     }
 
-    public ProcessStage getProcessStage() {
-        return processStage;
+    public ProcessStage getProcess() {
+        return process;
     }
 
-    public void setProcessStage(ProcessStage processStage) {
-        this.processStage = processStage;
+    public void setProcess(ProcessStage processStage) {
+        this.process = processStage;
     }
 }
