@@ -2,8 +2,11 @@ package com.example.sirirak.iotproj.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.AppCompatButton;
@@ -14,27 +17,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sirirak.iotproj.AwesomeDialogFragment;
+import com.example.sirirak.iotproj.Manifest;
 import com.example.sirirak.iotproj.R;
-import com.example.sirirak.iotproj.model.ProcessModel;
 import com.example.sirirak.iotproj.model.dataclass;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.nlopez.smartlocation.OnActivityUpdatedListener;
+import io.nlopez.smartlocation.OnGeofencingTransitionListener;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.geofencing.utils.TransitionGeofence;
+import io.nlopez.smartlocation.location.config.LocationParams;
+import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-public class AccountActivity extends AppCompatActivity implements AwesomeDialogFragment.OnDialogListener,OnLocationUpdatedListener {
+public class AccountActivity extends AppCompatActivity implements AwesomeDialogFragment.OnDialogListener,OnLocationUpdatedListener, OnActivityUpdatedListener, OnGeofencingTransitionListener {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient googleApiClient;
     private ValueEventListener valueEventListener;
     private AppCompatTextView tvDisplay;
     private DatabaseReference mUsersRef;
@@ -42,8 +46,7 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
     private Button btnTest;
     private Button btnTest2;
     private TextView tvDetail;
-    private ChildEventListener mChildEventListener;
-    dataclass pro;
+    private dataclass pro;
     String providerId = "null";
     String uid = "null";
     String name = "null";
@@ -58,13 +61,13 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
-
+        Log.d("AccountActivity","set Instance ");
 
         mAuthListener = firebaseAuth -> {
-            Log.d("AuthStateListener","");
+            Log.d("AccountActivity","AuthStateListener");
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                Log.d("AuthStateListener","user != null");
+                Log.d("AccountActivity","user != null");
                 name = user.getDisplayName();
                 email = user.getEmail();
                 uid = user.getUid();
@@ -92,6 +95,13 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
             DatabaseReference mUsersRef = mRootRef.child("users").child(uid);
             mUsersRef.child("pClient");
             mUsersRef.child("email").setValue(email);
+            if (ContextCompat.checkSelfPermission(AccountActivity.this, Manifest.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(AccountActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_ID);
+                return;
+            }else{
+                startLocation();
+            }
+
         }));
         btnTest2.setOnClickListener(view -> {
             DatabaseReference mUsersRef = mRootRef.child("users").child(uid);
@@ -148,9 +158,14 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
             }
         };
         mUsersRef.addValueEventListener(valueEventListener);
-        SmartLocation.with(this)
-                .location()
-                .start(this);
+
+
+        /*if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
+            SmartLocation.with(this).location().config(LocationParams.NAVIGATION).start(this);
+        } else {
+            Toast.makeText(this, "Location Unavailabled",
+                    Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     @Override
@@ -171,7 +186,6 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
     protected void onDestroy() {
         super.onDestroy();
         FirebaseAuth.getInstance().signOut();
-
     }
 
     @Override
@@ -184,8 +198,27 @@ public class AccountActivity extends AppCompatActivity implements AwesomeDialogF
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onLocationUpdated(Location location) {
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        float accuracy = location.getAccuracy();
+        float bearing = location.getBearing();
+        String provider = location.getProvider();
+        tvDetail.setText("latitude :"+latitude+"\nlongitude :"+longitude
+                        +"\naccuracy :"+accuracy+"\nbearing :"+bearing
+                        +"\nprovider :"+provider
+        );
+    }
+
+    @Override
+    public void onActivityUpdated(com.google.android.gms.location.DetectedActivity detectedActivity) {
+
+    }
+
+    @Override
+    public void onGeofenceTransition(TransitionGeofence transitionGeofence) {
 
     }
 }
